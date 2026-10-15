@@ -2,6 +2,18 @@
 
 Problem 1: clean-only anomaly detection for backdoor-triggered neural-network inference using hardware performance counters.
 
+## Hackathon problem statement
+
+**Problem 1: Detection of Backdoor Attacks using HPCs**
+
+An untrusted party may train a model to behave normally on most inputs but change its prediction when a special trigger pattern is embedded in an input. Teams receive hardware performance counter (HPC) traces from benign inferences and must train an anomaly detector that distinguishes traces from backdoor inferences from clean traces.
+
+The provided CSV contains HPC columns and 800 rows, one per clean inference. No backdoor inference traces are provided, preserving the strict anomaly-detection setting.
+
+**Requested repository deliverables:** complete code with finalized parameters, a saved detector model, a README, and a short PDF report describing the method.
+
+**Evaluation:** the organizer's private validation set contains clean and backdoor traces. The stated metrics include accuracy, true-positive rate (TPR), false-positive rate (FPR), F1, and AUROC. Those attack-set metrics cannot be measured from the supplied clean-only training CSV; this repository reports clean false-alarm evaluation and makes that limitation explicit.
+
 ## Proposed method
 
 A full-covariance Gaussian mixture models the joint distribution of the three log-transformed HPCs. For each counter, the detector computes its conditional negative log likelihood given the other two counters. The final anomaly score is the mean of the three conditional scores. This pseudo-likelihood score measures whether each counter is consistent with the relationships learned from the clean traces.
