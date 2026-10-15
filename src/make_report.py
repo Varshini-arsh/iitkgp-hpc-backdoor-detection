@@ -80,7 +80,8 @@ def main():
         "and a joint GMM on log raw counts.",
         "",
         "Mean held-out clean FPR +/- standard deviation",
-        f"Per-counter GMM proxy: {val('independent_per_counter_gmm_proxy','test_fpr_mean'):.2%} +/- {val('independent_per_counter_gmm_proxy','test_fpr_std'):.2%}",
+        f"DATE-style per-counter GMM (3-sigma): {val('date2024_per_counter_gmm_3sigma','test_fpr_mean'):.2%} +/- {val('date2024_per_counter_gmm_3sigma','test_fpr_std'):.2%}",
+        f"Per-counter GMM proxy at 5% calibration: {val('independent_per_counter_gmm_proxy','test_fpr_mean'):.2%} +/- {val('independent_per_counter_gmm_proxy','test_fpr_std'):.2%}",
         f"Joint raw-log GMM: {val('joint_raw_log_gmm','test_fpr_mean'):.2%} +/- {val('joint_raw_log_gmm','test_fpr_std'):.2%}",
         f"Conditional GMM pseudo-likelihood: {val('conditional_gmm_pseudolikelihood','test_fpr_mean'):.2%} +/- {val('conditional_gmm_pseudolikelihood','test_fpr_std'):.2%}",
         "",
@@ -88,10 +89,11 @@ def main():
         "Eight contiguous blocks of 100 traces were held out in turn. The next",
         "block calibrated the threshold; the other six blocks fitted each model.",
         f"Conditional pseudo-likelihood clean FPR: {bval('conditional_gmm_pseudolikelihood','blocked_test_fpr_mean'):.2%} +/- {bval('conditional_gmm_pseudolikelihood','blocked_test_fpr_std'):.2%}.",
-        f"Per-counter GMM proxy: {bval('per_counter_gmm_proxy','blocked_test_fpr_mean'):.2%} +/- {bval('per_counter_gmm_proxy','blocked_test_fpr_std'):.2%}.",
+        f"DATE-style per-counter GMM (3-sigma): {bval('date2024_per_counter_gmm_3sigma','blocked_test_fpr_mean'):.2%} +/- {bval('date2024_per_counter_gmm_3sigma','blocked_test_fpr_std'):.2%}.",
+        f"Per-counter GMM proxy at 5% calibration: {bval('per_counter_gmm_proxy','blocked_test_fpr_mean'):.2%} +/- {bval('per_counter_gmm_proxy','blocked_test_fpr_std'):.2%}.",
         f"Joint raw-log GMM: {bval('joint_raw_log_gmm','blocked_test_fpr_mean'):.2%} +/- {bval('joint_raw_log_gmm','blocked_test_fpr_std'):.2%}.",
-        "The edge is small and this one-file experiment cannot establish attack",
-        "detection or broad robustness.",
+        "No method has a demonstrated advantage for attack detection, and this",
+        "single-file experiment cannot establish broad robustness.",
         "",
         "Interpretation and limits",
         "These results assess clean false alarms only; they do not establish attack",
@@ -112,6 +114,7 @@ def main():
         "Reproduce: pip install -r requirements.txt",
         "python src/train_detector.py --input data/clean_hpc.csv --output artifacts",
         "python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts",
+        "python src/evaluate_blocked.py --input data/clean_hpc.csv --output artifacts",
     ]
     make_pdf(lines, args.output)
     print(f"Wrote {args.output}")

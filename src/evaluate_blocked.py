@@ -42,6 +42,7 @@ def main():
     chunks = np.array_split(np.arange(len(x)), 8)
     methods = {
         "per_counter_gmm_proxy": score_independent,
+        "date2024_per_counter_gmm_3sigma": score_independent,
         "joint_raw_log_gmm": score_joint,
         "conditional_gmm_pseudolikelihood": score_conditional,
     }
@@ -51,9 +52,12 @@ def main():
         excluded = {test_block, cal_block}
         train_ids = np.concatenate([g for j, g in enumerate(chunks) if j not in excluded])
         cal_ids, test_ids = chunks[cal_block], chunks[test_block]
+        score_cache = {}
         for name, scorer in methods.items():
-            cal, test = scorer(x[train_ids], x[cal_ids], x[test_ids], 100 + test_block, args.max_components)
-            threshold = np.quantile(cal, 1 - args.alpha, method="higher")
+            if scorer.__name__ not in score_cache:
+                score_cache[scorer.__name__] = scorer(x[train_ids], x[cal_ids], x[test_ids], 100 + test_block, args.max_components)
+            cal, test = score_cache[scorer.__name__]
+            threshold = 3.0 if name == "date2024_per_counter_gmm_3sigma" else np.quantile(cal, 1 - args.alpha, method="higher")
             records.append({
                 "test_block": test_block,
                 "calibration_block": cal_block,

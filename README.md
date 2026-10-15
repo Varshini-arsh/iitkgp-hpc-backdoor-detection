@@ -27,18 +27,19 @@ This writes artifacts/detector.joblib and artifacts/training_summary.json.
 
     python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts --repeats 25
 
-The script compares a per-counter GMM proxy, joint GMM on log raw counters, and the conditional pseudo-likelihood detector. Results are saved to artifacts/clean_only_comparison.csv and artifacts/clean_only_summary.csv.
+The script compares the DATE 2024-style per-counter GMM with a 3-sigma threshold, a per-counter GMM calibrated to 5% FPR, a joint GMM on log raw counters, and the conditional pseudo-likelihood detector. The DATE-style baseline estimates mean and standard deviation on the separate calibration split so all test FPRs are measured on held-out clean rows. Results are saved to artifacts/clean_only_comparison.csv and artifacts/clean_only_summary.csv.
 
 Current 25-split mean held-out clean FPR:
-- Per-counter GMM proxy: 5.35% (standard deviation 2.21 percentage points)
-- Joint raw-log GMM: 4.60% (standard deviation 1.69 percentage points)
-- Conditional GMM pseudo-likelihood: 4.30% (standard deviation 2.08 percentage points)
+- DATE-style per-counter GMM, 3-sigma rule: 3.85% (standard deviation 1.85 percentage points)
+- Per-counter GMM proxy, calibrated to 5%: 5.35% (standard deviation 2.21 points)
+- Joint raw-log GMM, calibrated to 5%: 4.60% (standard deviation 1.69 points)
+- Conditional GMM pseudo-likelihood, calibrated to 5%: 4.30% (standard deviation 2.08 points)
 
-These results assess clean false alarms only. They do not show which model best detects backdoor traces.
+The published-style baseline has the lowest clean FPR in these splits. The conditional score is retained as the proposed dependency-aware method, but this clean-only experiment does not show that it detects backdoors better.
 
 ## Contiguous-block stress check
 
-`python src/evaluate_blocked.py --input data/clean_hpc.csv --output artifacts` holds out each of eight contiguous 100-trace blocks in turn and calibrates on the following block. The remaining six blocks are used for fitting. Mean held-out clean FPR was 4.50% for conditional pseudo-likelihood (SD 3.02 percentage points), 4.63% for the per-counter GMM proxy (SD 2.67 points), and 4.88% for joint raw-log GMM (SD 4.12 points). The conditional method's edge is small and this single-file check cannot establish attack detection or broad robustness. Results are in `artifacts/blocked_clean_summary.csv`.
+`python src/evaluate_blocked.py --input data/clean_hpc.csv --output artifacts` holds out each of eight contiguous 100-trace blocks in turn and calibrates on the following block. The remaining six blocks are used for fitting. Mean held-out clean FPR was 4.38% for the DATE-style per-counter GMM 3-sigma rule (SD 2.62 percentage points), 4.50% for conditional pseudo-likelihood (SD 3.02 points), 4.63% for the calibrated per-counter GMM proxy (SD 2.67 points), and 4.88% for joint raw-log GMM (SD 4.12 points). The conditional method does not lead on this clean-only metric. This single-file check cannot establish attack detection or broad robustness. Results are in `artifacts/blocked_clean_summary.csv`.
 
 ## Score traces with the saved model
 

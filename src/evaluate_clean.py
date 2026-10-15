@@ -53,13 +53,15 @@ def main():
         idx_fit, idx_rest = train_test_split(np.arange(len(x)), test_size=0.4, random_state=seed)
         idx_cal, idx_test = train_test_split(idx_rest, test_size=0.5, random_state=1000 + seed)
         fit, cal, test = x[idx_fit], x[idx_cal], x[idx_test]
+        independent_scores = fit_independent(fit, cal, test, seed, args.max_components)
         methods = [
-            ("independent_per_counter_gmm_proxy", fit_independent(fit, cal, test, seed, args.max_components)),
+            ("independent_per_counter_gmm_proxy", independent_scores),
+            ("date2024_per_counter_gmm_3sigma", independent_scores),
             ("joint_raw_log_gmm", fit_score(fit, cal, test, seed, args.max_components)),
             ("conditional_gmm_pseudolikelihood", fit_conditional(fit, cal, test, seed, args.max_components)),
         ]
         for name, (cal_scores, test_scores, components, bic) in methods:
-            threshold = float(np.quantile(cal_scores, 1 - args.alpha, method="higher"))
+            threshold = 3.0 if name == "date2024_per_counter_gmm_3sigma" else float(np.quantile(cal_scores, 1 - args.alpha, method="higher"))
             records.append({
                 "seed": seed,
                 "method": name,

@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
 endobj
 4 0 obj
-<< /Length 2718 >>
+<< /Length 2747 >>
 stream
 BT
 /F1 10 Tf
@@ -70,7 +70,9 @@ T*
 T*
 (Mean held-out clean FPR +/- standard deviation) Tj
 T*
-(Per-counter GMM proxy: 5.35% +/- 2.21%) Tj
+(DATE-style per-counter GMM \(3-sigma\): 3.85% +/- 1.85%) Tj
+T*
+(Per-counter GMM proxy at 5% calibration: 5.35% +/- 2.21%) Tj
 T*
 (Joint raw-log GMM: 4.60% +/- 1.69%) Tj
 T*
@@ -86,13 +88,15 @@ T*
 T*
 (Conditional pseudo-likelihood clean FPR: 4.50% +/- 3.02%.) Tj
 T*
-(Per-counter GMM proxy: 4.62% +/- 2.67%.) Tj
+(DATE-style per-counter GMM \(3-sigma\): 4.38% +/- 2.62%.) Tj
+T*
+(Per-counter GMM proxy at 5% calibration: 4.62% +/- 2.67%.) Tj
 T*
 (Joint raw-log GMM: 4.88% +/- 4.12%.) Tj
 T*
-(The edge is small and this one-file experiment cannot establish attack) Tj
+(No method has a demonstrated advantage for attack detection, and this) Tj
 T*
-(detection or broad robustness.) Tj
+(single-file experiment cannot establish broad robustness.) Tj
 T*
 () Tj
 T*
@@ -108,10 +112,6 @@ T*
 T*
 (Calibration assumes future clean traces are exchangeable with calibration) Tj
 T*
-(traces; it does not guarantee the same false-positive rate under shift.) Tj
-T*
-(The conditional scoring design differs from the per-counter GMM design in) Tj
-T*
 ET
 endstream
 endobj
@@ -119,12 +119,16 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
 endobj
 6 0 obj
-<< /Length 672 >>
+<< /Length 919 >>
 stream
 BT
 /F1 10 Tf
 50 790 Td
 14 TL
+(traces; it does not guarantee the same false-positive rate under shift.) Tj
+T*
+(The conditional scoring design differs from the per-counter GMM design in) Tj
+T*
 (the closest published HPC backdoor-detection paper, but this is not a claim) Tj
 T*
 (that conditional likelihood or GMMs are new in general.) Tj
@@ -147,6 +151,8 @@ T*
 T*
 (python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts) Tj
 T*
+(python src/evaluate_blocked.py --input data/clean_hpc.csv --output artifacts) Tj
+T*
 ET
 endstream
 endobj
@@ -160,11 +166,11 @@ xref
 0000000064 00000 n 
 0000000127 00000 n 
 0000000253 00000 n 
-0000003023 00000 n 
-0000003149 00000 n 
-0000003872 00000 n 
+0000003052 00000 n 
+0000003178 00000 n 
+0000004148 00000 n 
 trailer
 << /Size 8 /Root 1 0 R >>
 startxref
-3942
+4218
 %%EOF

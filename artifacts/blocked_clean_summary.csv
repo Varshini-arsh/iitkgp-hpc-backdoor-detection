@@ -1,4 +1,5 @@
 method,blocked_test_fpr_mean,blocked_test_fpr_std,blocked_calibration_fpr_mean,blocks
 conditional_gmm_pseudolikelihood,0.045,0.03023715784073818,0.04,8
+date2024_per_counter_gmm_3sigma,0.04375,0.026152028055746873,0.03875,8
 joint_raw_log_gmm,0.04875,0.041209395599963436,0.04,8
 per_counter_gmm_proxy,0.04625,0.026692695630078284,0.04,8
