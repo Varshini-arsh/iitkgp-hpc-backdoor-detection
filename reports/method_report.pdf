@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
 endobj
 4 0 obj
-<< /Length 2618 >>
+<< /Length 2712 >>
 stream
 BT
 /F1 10 Tf
@@ -18,85 +18,85 @@ BT
 14 TL
 (IIT Kharagpur ML Security Hackathon - Problem 1) Tj
 T*
-(Clean-Only HPC Backdoor Anomaly Detection) Tj
+(Conditional HPC Anomaly Detection for Backdoor Inference) Tj
 T*
 () Tj
 T*
 (Objective) Tj
 T*
-(Detect inference traces that differ from benign HPC behavior, with no) Tj
+(Learn normal inference behavior from clean HPC traces and flag deviations.) Tj
 T*
-(backdoor traces available during training. The supplied file has 800 clean) Tj
-T*
-(inferences and three hardware performance counters.) Tj
+(The supplied data has 800 clean inferences and no attack examples.) Tj
 T*
 () Tj
 T*
-(Data preparation) Tj
+(Data) Tj
 T*
-(Features: cycles, cache-references, LLC-loads. The unnamed sequential) Tj
+(Counters: cycles, cache-references, LLC-loads. The unnamed sequential) Tj
 T*
-(column is a row index and is dropped. Features are log\(cycles\),) Tj
+(column is a row index and is dropped. Cache references and LLC loads have) Tj
 T*
-(log\(cache-references/cycles\), and log\(LLC-loads/cache-references\).) Tj
-T*
-(Cache references and LLC loads have approximately 0.92 Pearson correlation) Tj
-T*
-(in the supplied clean traces.) Tj
+(approximately 0.92 Pearson correlation in the supplied clean traces.) Tj
 T*
 () Tj
 T*
-(Proposed detector) Tj
+(Proposed method) Tj
 T*
-(A Gaussian mixture density is fitted to the joint transformed HPC vector.) Tj
+(A full-covariance Gaussian mixture models the joint distribution of the) Tj
 T*
-(BIC selects the mixture size on the fitting split. The anomaly score is) Tj
+(three log-transformed counters. For each counter, calculate its conditional) Tj
 T*
-(negative log likelihood. A separate clean calibration split sets the) Tj
+(negative log likelihood given the other two counters. Average the three) Tj
 T*
-(threshold at the configured 95th percentile. The artifact saves scaler,) Tj
+(conditional scores for the final anomaly score. This pseudo-likelihood) Tj
 T*
-(model, feature names, and threshold.) Tj
+(measures whether each counter is consistent with the clean relationships) Tj
 T*
-() Tj
+(learned from the other counters. Select mixture size by BIC on fitting data.) Tj
 T*
-(Evaluation design) Tj
-T*
-(Twenty-five deterministic clean-only splits: 60% fit, 20% calibration,) Tj
-T*
-(20% held-out clean evaluation. Baselines: \(1\) per-counter GMM proxy using) Tj
-T*
-(the maximum standardized marginal negative log likelihood, and \(2\) joint) Tj
-T*
-(GMM on log raw counter values. The proposed work-conditioned feature GMM) Tj
-T*
-(is compared using identical splits.) Tj
+(Calibrate the final threshold on separate clean traces.) Tj
 T*
 () Tj
 T*
-(Clean-only results: mean held-out FPR +/- standard deviation) Tj
+(Evaluation) Tj
 T*
-(Per-counter GMM proxy: 5.33% +/- 2.21%) Tj
+(25 deterministic clean-only splits; each uses 60% fit, 20% calibration,) Tj
 T*
-(Joint raw-log GMM: 4.60% +/- 1.78%) Tj
+(and 20% held-out clean evaluation. Baselines are a per-counter GMM proxy) Tj
 T*
-(Work-conditioned feature GMM: 4.75% +/- 1.81%) Tj
+(and a joint GMM on log raw counts.) Tj
+T*
+() Tj
+T*
+(Mean held-out clean FPR +/- standard deviation) Tj
+T*
+(Per-counter GMM proxy: 5.35% +/- 2.21%) Tj
+T*
+(Joint raw-log GMM: 4.60% +/- 1.69%) Tj
+T*
+(Conditional GMM pseudo-likelihood: 4.30% +/- 2.08%) Tj
 T*
 () Tj
 T*
 (Interpretation and limits) Tj
 T*
-(These results measure clean false alarms only. Small FPR differences do) Tj
+(These results assess clean false alarms only; they do not establish attack) Tj
 T*
-(not demonstrate superior backdoor detection. No attack examples were) Tj
+(detection performance. No backdoor traces were provided, so TPR, attack) Tj
 T*
-(provided, so TPR, attack FPR, F1, and AUROC cannot be calculated. Triggered) Tj
+(FPR, F1, and AUROC cannot be calculated. Proxy-trigger runs, if collected,) Tj
 T*
-(proxy runs, if collected, must be reported as separate evaluation.) Tj
+(must be reported separately and kept out of fitting and calibration.) Tj
 T*
-(Calibration assumes future clean traces are comparable to calibration) Tj
+(Calibration assumes future clean traces are exchangeable with calibration) Tj
 T*
-(traces; it does not guarantee the same FPR under distribution shift.) Tj
+(traces; it does not guarantee the same false-positive rate under shift.) Tj
+T*
+(The conditional scoring design differs from the per-counter GMM design in) Tj
+T*
+(the closest published HPC backdoor-detection paper, but this is not a claim) Tj
+T*
+(that conditional likelihood or GMMs are new in general.) Tj
 T*
 () Tj
 T*
@@ -110,7 +110,7 @@ T*
 T*
 () Tj
 T*
-(Reproduction commands) Tj
+(Reproduce: pip install -r requirements.txt) Tj
 T*
 ET
 endstream
@@ -119,14 +119,12 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
 endobj
 6 0 obj
-<< /Length 237 >>
+<< /Length 197 >>
 stream
 BT
 /F1 10 Tf
 50 790 Td
 14 TL
-(pip install -r requirements.txt) Tj
-T*
 (python src/train_detector.py --input data/clean_hpc.csv --output artifacts) Tj
 T*
 (python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts) Tj
@@ -144,11 +142,11 @@ xref
 0000000064 00000 n 
 0000000127 00000 n 
 0000000253 00000 n 
-0000002923 00000 n 
-0000003049 00000 n 
-0000003337 00000 n 
+0000003017 00000 n 
+0000003143 00000 n 
+0000003391 00000 n 
 trailer
 << /Size 8 /Root 1 0 R >>
 startxref
-3407
+3461
 %%EOF

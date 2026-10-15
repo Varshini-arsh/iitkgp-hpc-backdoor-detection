@@ -1,4 +1,4 @@
 method,test_fpr_mean,test_fpr_std,calibration_fpr_mean,repeats
-independent_per_counter_gmm,0.05325,0.022105923979784243,0.04375,25
-joint_raw_log_gmm,0.046,0.017849924136159982,0.04375,25
-work_conditioned_feature_gmm,0.0475,0.018132182484926263,0.04375,25
+conditional_gmm_pseudolikelihood,0.043,0.0208322916406237,0.04375,25
+independent_per_counter_gmm_proxy,0.0535,0.02210297868312474,0.04375,25
+joint_raw_log_gmm,0.046,0.016913536245662327,0.04375,25

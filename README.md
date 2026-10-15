@@ -2,23 +2,19 @@
 
 Problem 1: clean-only anomaly detection for backdoor-triggered neural-network inference using hardware performance counters.
 
-## Method
+## Proposed method
 
-The proposed detector fits a small Gaussian mixture density to three transformed HPC features:
+A full-covariance Gaussian mixture models the joint distribution of the three log-transformed HPCs. For each counter, the detector computes its conditional negative log likelihood given the other two counters. The final anomaly score is the mean of the three conditional scores. This pseudo-likelihood score measures whether each counter is consistent with the relationships learned from the clean traces.
 
-- log(cycles) for inference work
-- log(cache-references / cycles) for relative cache activity
-- log(LLC-loads / cache-references) for LLC activity relative to cache references
+The mixture size is selected by BIC using only the fitting split. A separate clean calibration split sets the alert threshold. The saved detector contains the model, scaler, feature names, and threshold. The scoring script also reports the counter with the largest conditional score.
 
-The mixture size is selected by BIC using only the fitting split. The anomaly score is negative log likelihood. A held-out clean calibration split sets a 5% tail threshold. The trained bundle stores preprocessing, model, feature names, and threshold.
-
-This is an empirical alternative to the closest published HPC backdoor detector, which fits per-counter GMMs. It is not a claim that the underlying ingredients are globally novel or proven to improve attack detection.
+This is a distinct scoring rule from the closest published HPC backdoor method, which fits separate per-counter GMMs, and from ordinary joint-GMM negative log likelihood. It is not a claim that conditional likelihood or Gaussian mixtures are new in general. Attack detection performance remains unverified without backdoor traces.
 
 ## Data
 
-data/clean_hpc.csv contains 800 clean traces and three HPC columns: cache-references, cycles, and LLC-loads. Its unnamed column is a sequential row index and is dropped automatically. In these clean traces, cache references and LLC loads have Pearson correlation approximately 0.92.
+data/clean_hpc.csv contains 800 clean traces with counters cache-references, cycles, and LLC-loads. The unnamed sequential column is an exported row index and is removed. In the clean traces, cache-references and LLC-loads have Pearson correlation approximately 0.92.
 
-## Setup and training
+## Setup and train
 
     python -m venv .venv
     .\.venv\Scripts\Activate.ps1
@@ -27,29 +23,33 @@ data/clean_hpc.csv contains 800 clean traces and three HPC columns: cache-refere
 
 This writes artifacts/detector.joblib and artifacts/training_summary.json.
 
-## Clean-only comparison
+## Evaluate clean false alarms
 
     python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts --repeats 25
 
-It compares a per-counter GMM proxy baseline, a joint GMM on log raw counters, and the work-conditioned feature GMM. Results are in artifacts/clean_only_comparison.csv and artifacts/clean_only_summary.csv.
+The script compares a per-counter GMM proxy, joint GMM on log raw counters, and the conditional pseudo-likelihood detector. Results are saved to artifacts/clean_only_comparison.csv and artifacts/clean_only_summary.csv.
 
-On the current 25-split run, mean held-out clean FPR was 5.33% for the per-counter proxy, 4.60% for the raw joint GMM, and 4.75% for the proposed features. These clean-only results do not measure backdoor detection and do not establish superiority.
+Current 25-split mean held-out clean FPR:
+- Per-counter GMM proxy: 5.35% (standard deviation 2.21 percentage points)
+- Joint raw-log GMM: 4.60% (standard deviation 1.69 percentage points)
+- Conditional GMM pseudo-likelihood: 4.30% (standard deviation 2.08 percentage points)
 
-## Scoring new traces
+These results assess clean false alarms only. They do not show which model best detects backdoor traces.
+
+## Score traces with the saved model
 
     python src/score_detector.py --model artifacts/detector.joblib --input data/to_score.csv --output artifacts/scores.csv
 
-The scoring CSV must include the three named counters. Output scores and labels are written to artifacts/scores.csv.
+The input CSV must include the three counter columns. Output includes the anomaly score, label, and most unusual conditional counter.
 
-## Limitations
+## Limits
 
-The supplied data contains no backdoor traces. TPR, attack FPR, F1, and AUROC are unavailable until there is a separately labeled attack evaluation set. Locally generated triggered traces are proxy experiments and must not be used for fitting or calibration. The clean calibration threshold assumes future clean traces are comparable to calibration data; it is not a guarantee under distribution shift.
+No backdoor traces were supplied. TPR, attack FPR, F1, and AUROC cannot be measured yet. Any locally generated triggered traces should be used only as separate proxy evaluation and kept out of model fitting and threshold calibration. Clean calibration assumes new clean traces are exchangeable with calibration data and does not guarantee the same FPR under distribution shift.
 
 ## Related work
 
-Alam, Wang, and Maniatakos, “Detecting Backdoor Attacks in Black-Box Neural Networks through Hardware Performance Counters,” DATE 2024. Their public method is included as a baseline reference; this repository does not copy their implementation.
+Alam, Wang, and Maniatakos, “Detecting Backdoor Attacks in Black-Box Neural Networks through Hardware Performance Counters,” DATE 2024. https://past.date-conference.com/proceedings-archive/2024/DATA/1142_pdf_upload.pdf
 
 ## Report
 
-See reports/method_report.pdf for method, split design, clean-only results, and limitations.
-
+See reports/method_report.pdf for method, split design, clean-only comparison, and limitations.
