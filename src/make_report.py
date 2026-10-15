@@ -49,6 +49,9 @@ def main():
     df = pd.read_csv(args.summary).set_index("method")
     def val(method, col):
         return float(df.loc[method, col])
+    blocked = pd.read_csv(args.summary.with_name("blocked_clean_summary.csv")).set_index("method")
+    def bval(method, col):
+        return float(blocked.loc[method, col])
     lines = [
         "IIT Kharagpur ML Security Hackathon - Problem 1",
         "Conditional HPC Anomaly Detection for Backdoor Inference",
@@ -80,6 +83,15 @@ def main():
         f"Per-counter GMM proxy: {val('independent_per_counter_gmm_proxy','test_fpr_mean'):.2%} +/- {val('independent_per_counter_gmm_proxy','test_fpr_std'):.2%}",
         f"Joint raw-log GMM: {val('joint_raw_log_gmm','test_fpr_mean'):.2%} +/- {val('joint_raw_log_gmm','test_fpr_std'):.2%}",
         f"Conditional GMM pseudo-likelihood: {val('conditional_gmm_pseudolikelihood','test_fpr_mean'):.2%} +/- {val('conditional_gmm_pseudolikelihood','test_fpr_std'):.2%}",
+        "",
+        "Contiguous-block stress check",
+        "Eight contiguous blocks of 100 traces were held out in turn. The next",
+        "block calibrated the threshold; the other six blocks fitted each model.",
+        f"Conditional pseudo-likelihood clean FPR: {bval('conditional_gmm_pseudolikelihood','blocked_test_fpr_mean'):.2%} +/- {bval('conditional_gmm_pseudolikelihood','blocked_test_fpr_std'):.2%}.",
+        f"Per-counter GMM proxy: {bval('per_counter_gmm_proxy','blocked_test_fpr_mean'):.2%} +/- {bval('per_counter_gmm_proxy','blocked_test_fpr_std'):.2%}.",
+        f"Joint raw-log GMM: {bval('joint_raw_log_gmm','blocked_test_fpr_mean'):.2%} +/- {bval('joint_raw_log_gmm','blocked_test_fpr_std'):.2%}.",
+        "The edge is small and this one-file experiment cannot establish attack",
+        "detection or broad robustness.",
         "",
         "Interpretation and limits",
         "These results assess clean false alarms only; they do not establish attack",

@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
 endobj
 4 0 obj
-<< /Length 2712 >>
+<< /Length 2718 >>
 stream
 BT
 /F1 10 Tf
@@ -78,6 +78,24 @@ T*
 T*
 () Tj
 T*
+(Contiguous-block stress check) Tj
+T*
+(Eight contiguous blocks of 100 traces were held out in turn. The next) Tj
+T*
+(block calibrated the threshold; the other six blocks fitted each model.) Tj
+T*
+(Conditional pseudo-likelihood clean FPR: 4.50% +/- 3.02%.) Tj
+T*
+(Per-counter GMM proxy: 4.62% +/- 2.67%.) Tj
+T*
+(Joint raw-log GMM: 4.88% +/- 4.12%.) Tj
+T*
+(The edge is small and this one-file experiment cannot establish attack) Tj
+T*
+(detection or broad robustness.) Tj
+T*
+() Tj
+T*
 (Interpretation and limits) Tj
 T*
 (These results assess clean false alarms only; they do not establish attack) Tj
@@ -94,6 +112,19 @@ T*
 T*
 (The conditional scoring design differs from the per-counter GMM design in) Tj
 T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 672 >>
+stream
+BT
+/F1 10 Tf
+50 790 Td
+14 TL
 (the closest published HPC backdoor-detection paper, but this is not a claim) Tj
 T*
 (that conditional likelihood or GMMs are new in general.) Tj
@@ -112,19 +143,6 @@ T*
 T*
 (Reproduce: pip install -r requirements.txt) Tj
 T*
-ET
-endstream
-endobj
-5 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
-endobj
-6 0 obj
-<< /Length 197 >>
-stream
-BT
-/F1 10 Tf
-50 790 Td
-14 TL
 (python src/train_detector.py --input data/clean_hpc.csv --output artifacts) Tj
 T*
 (python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts) Tj
@@ -142,11 +160,11 @@ xref
 0000000064 00000 n 
 0000000127 00000 n 
 0000000253 00000 n 
-0000003017 00000 n 
-0000003143 00000 n 
-0000003391 00000 n 
+0000003023 00000 n 
+0000003149 00000 n 
+0000003872 00000 n 
 trailer
 << /Size 8 /Root 1 0 R >>
 startxref
-3461
+3942
 %%EOF

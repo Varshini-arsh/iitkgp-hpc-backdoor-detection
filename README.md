@@ -36,6 +36,10 @@ Current 25-split mean held-out clean FPR:
 
 These results assess clean false alarms only. They do not show which model best detects backdoor traces.
 
+## Contiguous-block stress check
+
+`python src/evaluate_blocked.py --input data/clean_hpc.csv --output artifacts` holds out each of eight contiguous 100-trace blocks in turn and calibrates on the following block. The remaining six blocks are used for fitting. Mean held-out clean FPR was 4.50% for conditional pseudo-likelihood (SD 3.02 percentage points), 4.63% for the per-counter GMM proxy (SD 2.67 points), and 4.88% for joint raw-log GMM (SD 4.12 points). The conditional method's edge is small and this single-file check cannot establish attack detection or broad robustness. Results are in `artifacts/blocked_clean_summary.csv`.
+
 ## Score traces with the saved model
 
     python src/score_detector.py --model artifacts/detector.joblib --input data/to_score.csv --output artifacts/scores.csv
