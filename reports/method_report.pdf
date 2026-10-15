@@ -1,0 +1,154 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 2618 >>
+stream
+BT
+/F1 10 Tf
+50 790 Td
+14 TL
+(IIT Kharagpur ML Security Hackathon - Problem 1) Tj
+T*
+(Clean-Only HPC Backdoor Anomaly Detection) Tj
+T*
+() Tj
+T*
+(Objective) Tj
+T*
+(Detect inference traces that differ from benign HPC behavior, with no) Tj
+T*
+(backdoor traces available during training. The supplied file has 800 clean) Tj
+T*
+(inferences and three hardware performance counters.) Tj
+T*
+() Tj
+T*
+(Data preparation) Tj
+T*
+(Features: cycles, cache-references, LLC-loads. The unnamed sequential) Tj
+T*
+(column is a row index and is dropped. Features are log\(cycles\),) Tj
+T*
+(log\(cache-references/cycles\), and log\(LLC-loads/cache-references\).) Tj
+T*
+(Cache references and LLC loads have approximately 0.92 Pearson correlation) Tj
+T*
+(in the supplied clean traces.) Tj
+T*
+() Tj
+T*
+(Proposed detector) Tj
+T*
+(A Gaussian mixture density is fitted to the joint transformed HPC vector.) Tj
+T*
+(BIC selects the mixture size on the fitting split. The anomaly score is) Tj
+T*
+(negative log likelihood. A separate clean calibration split sets the) Tj
+T*
+(threshold at the configured 95th percentile. The artifact saves scaler,) Tj
+T*
+(model, feature names, and threshold.) Tj
+T*
+() Tj
+T*
+(Evaluation design) Tj
+T*
+(Twenty-five deterministic clean-only splits: 60% fit, 20% calibration,) Tj
+T*
+(20% held-out clean evaluation. Baselines: \(1\) per-counter GMM proxy using) Tj
+T*
+(the maximum standardized marginal negative log likelihood, and \(2\) joint) Tj
+T*
+(GMM on log raw counter values. The proposed work-conditioned feature GMM) Tj
+T*
+(is compared using identical splits.) Tj
+T*
+() Tj
+T*
+(Clean-only results: mean held-out FPR +/- standard deviation) Tj
+T*
+(Per-counter GMM proxy: 5.33% +/- 2.21%) Tj
+T*
+(Joint raw-log GMM: 4.60% +/- 1.78%) Tj
+T*
+(Work-conditioned feature GMM: 4.75% +/- 1.81%) Tj
+T*
+() Tj
+T*
+(Interpretation and limits) Tj
+T*
+(These results measure clean false alarms only. Small FPR differences do) Tj
+T*
+(not demonstrate superior backdoor detection. No attack examples were) Tj
+T*
+(provided, so TPR, attack FPR, F1, and AUROC cannot be calculated. Triggered) Tj
+T*
+(proxy runs, if collected, must be reported as separate evaluation.) Tj
+T*
+(Calibration assumes future clean traces are comparable to calibration) Tj
+T*
+(traces; it does not guarantee the same FPR under distribution shift.) Tj
+T*
+() Tj
+T*
+(Related work) Tj
+T*
+(Alam, Wang, Maniatakos, DATE 2024, Detecting Backdoor Attacks in Black-Box) Tj
+T*
+(Neural Networks through Hardware Performance Counters.) Tj
+T*
+(https://past.date-conference.com/proceedings-archive/2024/DATA/1142_pdf_upload.pdf) Tj
+T*
+() Tj
+T*
+(Reproduction commands) Tj
+T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 237 >>
+stream
+BT
+/F1 10 Tf
+50 790 Td
+14 TL
+(pip install -r requirements.txt) Tj
+T*
+(python src/train_detector.py --input data/clean_hpc.csv --output artifacts) Tj
+T*
+(python src/evaluate_clean.py --input data/clean_hpc.csv --output artifacts) Tj
+T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000253 00000 n 
+0000002923 00000 n 
+0000003049 00000 n 
+0000003337 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+3407
+%%EOF

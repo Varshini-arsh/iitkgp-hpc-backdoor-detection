@@ -1,0 +1,15 @@
+{
+  "rows": 800,
+  "fit_rows": 600,
+  "calibration_rows": 200,
+  "selected_components": 4,
+  "training_bic": 4530.288861835654,
+  "alpha": 0.05,
+  "threshold": 6.766693047043804,
+  "calibration_fpr_observed": 0.045,
+  "features": [
+    "log_cycles",
+    "log_cache_references_per_cycle",
+    "log_llc_loads_per_cache_reference"
+  ]
+}
